@@ -1,0 +1,47 @@
+<h1>Cars</h1>
+
+<div>
+  <span>Make</span>
+  <input placeholder="make" [(ngModel)]="newCar.make" />
+</div>
+
+<div>
+  <span>Model</span>
+  <input placeholder="model" [(ngModel)]="newCar.model"/>
+</div>
+
+<div>
+  <span>Year</span>
+  <input placeholder="year" [(ngModel)]="newCar.year"/>
+</div>
+
+<div>
+  <span>Color</span>
+  <input placeholder="color" [(ngModel)]="newCar.color"/>
+</div>
+
+<div>
+  <span>ID</span>
+  <input placeholder="color" [(ngModel)]="newCar.ID"/>
+</div>
+
+
+<button (click)="add()">Add</button>
+
+<table>
+  <thead>
+    <tr>
+      <td>Make</td>
+      <td>Model</td>
+      <td>ID</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let car of cars">
+      <td>{{ car.make }}</td>
+      <td>{{ car.model }}</td>
+      <td>{{ car.ID }}</td>
+      <button (click)="delete(car.ID)">Delete</button>
+    </tr>
+  </tbody>
+</table>

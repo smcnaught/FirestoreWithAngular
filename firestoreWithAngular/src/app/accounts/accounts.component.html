@@ -1,0 +1,16 @@
+<h1>Tasks By Location</h1>
+<table>
+  <thead>
+    <tr>
+      <td>Task Name</td>
+      <td>Status</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let task of tasksByLocation">
+      <td>{{ task.TaskName }}</td>
+      <td>{{ task.Status }}</td>
+      <!-- <button (click)="delete(location.ID)">Delete</button> -->
+    </tr>
+  </tbody>
+</table>
