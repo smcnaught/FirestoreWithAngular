@@ -8,9 +8,11 @@
   </thead>
   <tbody>
     <tr *ngFor="let task of tasksByLocation">
-      <td>{{ task.TaskName }}</td>
-      <td>{{ task.Status }}</td>
-      <!-- <button (click)="delete(location.ID)">Delete</button> -->
+      <td>{{ task.Name }}</td>
+      <td>{{ task.CurrentStatus }}</td>
+      <button (click)="deleteTask(task.ID.toString())">Delete</button>
+      <button (click)="updateTask(task.ID.toString(), { Name: 'My New Task Updated' })">Update</button>
     </tr>
   </tbody>
 </table>
+<button (click)="createTask()">Add</button>
