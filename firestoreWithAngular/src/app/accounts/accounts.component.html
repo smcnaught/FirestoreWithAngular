@@ -12,6 +12,7 @@
       <td>{{ task.CurrentStatus }}</td>
       <button (click)="deleteTask(task.ID.toString())">Delete</button>
       <button (click)="updateTask(task.ID.toString(), { Name: 'My New Task Updated' })">Update</button>
+      <button (click)="getTaskByID(task.ID.toString())">Get</button>
     </tr>
   </tbody>
 </table>

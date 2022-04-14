@@ -1,6 +1,11 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from "@angular/fire/compat/firestore";
+import { AngularFirestoreCollection, AngularFirestore, DocumentReference, DocumentSnapshot } from "@angular/fire/compat/firestore";
 import { Subscription } from "rxjs";
+
+export enum TaskTemplateType {
+  form = 1, // This is a task template of type 'FORM', NOT a Form Template
+  checklist = 2
+}
 
 export interface ITask {
   Name: string
@@ -8,6 +13,34 @@ export interface ITask {
   ExpireDate: string
   CurrentStatus: string
   ID: string; // id of document in firestore
+  OrgID: number;
+  LocationID: number;
+  TaskType: TaskTemplateType;
+  TaskTypeID: number;
+  Description: string;
+  AvailableDate: string;
+  AvailableTime: string;
+  DueTime: string;
+  ExpireTime: string;
+  CompletedDate: string;
+	CompletedTime: string;
+  Completed: boolean;
+  CompletedBy: number; // user-id
+  CreatedBy: number; // user-id
+	DriveIDs: number[];
+	TaskTemplateID: number;
+	Drives: [];
+  CompletedOnTime: boolean;
+  Expired: boolean;
+  AssignedRoles: [];
+  AssignedUsers: [];
+  SubTaskList: [];
+  ItemsComplete: number;
+  ItemsTotal: number;
+  ItemsCompletedLate: number;
+  ItemsRemaining: number;
+  ItemsExpired: number;
+	TotalRows: number;
 }
 
 export interface IUpdateTask {
@@ -25,8 +58,8 @@ export interface IUpdateTask {
 export class AccountsComponent implements OnInit, OnDestroy {
   public tasksByLocation: ITask[] = [];
 
-  private orgId = '96';
-  private locationId = '107';
+  private orgId = '19';
+  private locationId = '35';
   private subscriptions = new Subscription();
 
   constructor(private afs: AngularFirestore) {}
@@ -39,14 +72,54 @@ export class AccountsComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
+  public getTaskByID(taskID: string): void {
+    const tasksCollection: AngularFirestoreCollection<ITask> = this.getTasksCollection();
+    const getTaskSub = tasksCollection
+      .doc(taskID)
+      .get()
+      .subscribe((response: DocumentSnapshot<ITask> | any) => {
+        const task: ITask = response.data();
+      })
+
+    this.subscriptions.add(getTaskSub);
+  }
+
   public createTask(): void {
     const tasksCollection: AngularFirestoreCollection<ITask> = this.getTasksCollection();
     const newTask: ITask = {
-      Name: "My New Task",
-      DueDate: "2022-08-04",
-      ExpireDate: "2022-03-09",
+      Name: "April 12 Task",
+      DueDate: "2022-05-15",
+      ExpireDate: "",
       CurrentStatus: "Open",
-      ID: null
+      ID: null,
+      OrgID: +this.orgId,
+      LocationID: +this.locationId,
+      TaskType: 2,
+      TaskTypeID: 2,
+      Description: 'my task',
+      AvailableDate: "2022-04-12",
+      AvailableTime: '08:44',
+      DueTime: '',
+      ExpireTime: '',
+      CompletedDate: '',
+      CompletedTime: '',
+      Completed: false,
+      CompletedBy: null, // user-id
+      CreatedBy: null, // user-id
+      DriveIDs: [],
+      TaskTemplateID: null,
+      Drives: [],
+      CompletedOnTime: null,
+      Expired: false,
+      AssignedRoles: [],
+      AssignedUsers: [],
+      SubTaskList: [],
+      ItemsComplete: null,
+      ItemsTotal: null,
+      ItemsCompletedLate: null,
+      ItemsRemaining: null,
+      ItemsExpired: null,
+      TotalRows: null,
     }
 
     tasksCollection.add(newTask)
@@ -79,11 +152,16 @@ export class AccountsComponent implements OnInit, OnDestroy {
   }
 
   private getTasksCollection(): AngularFirestoreCollection<ITask> {
+    const startDate = "2022-04-11";
+    let endDate;
+
     return this.afs
       .collection('accounts')
       .doc(this.orgId)
       .collection('locations')
       .doc(this.locationId)
-      .collection('tasks')
+      .collection('tasks', tasks => tasks
+      .where('AvailableDate', '>=', startDate)
+      .where('AvailableDate', '<=', endDate || startDate)) // if no end date, get single day of tasks
   }
 }
