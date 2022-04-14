@@ -73,7 +73,7 @@ export class AccountsComponent implements OnInit, OnDestroy {
   }
 
   public getTaskByID(taskID: string): void {
-    const tasksCollection: AngularFirestoreCollection<ITask> = this.getTasksCollection();
+    const tasksCollection: AngularFirestoreCollection<ITask> = this.getTasksCollection(false);
     const getTaskSub = tasksCollection
       .doc(taskID)
       .get()
@@ -85,7 +85,7 @@ export class AccountsComponent implements OnInit, OnDestroy {
   }
 
   public createTask(): void {
-    const tasksCollection: AngularFirestoreCollection<ITask> = this.getTasksCollection();
+    const tasksCollection: AngularFirestoreCollection<ITask> = this.getTasksCollection(false);
     const newTask: ITask = {
       Name: "April 12 Task",
       DueDate: "2022-05-15",
@@ -129,19 +129,19 @@ export class AccountsComponent implements OnInit, OnDestroy {
   }
 
   public updateTask(taskID: string, taskDataToUpdate: IUpdateTask): void {
-    const tasksCollection: AngularFirestoreCollection<ITask> = this.getTasksCollection();
+    const tasksCollection: AngularFirestoreCollection<ITask> = this.getTasksCollection(false);
     tasksCollection
       .doc(taskID)
       .set(taskDataToUpdate as ITask, { merge: true }); // Change some properties without passing up the entire object. 
   }
 
   public deleteTask(taskID: string): void {
-    const tasksCollection: AngularFirestoreCollection<ITask> = this.getTasksCollection();
+    const tasksCollection: AngularFirestoreCollection<ITask> = this.getTasksCollection(false);
     tasksCollection.doc(taskID).delete();
   }
 
   private setupLocationDbListener(): void {
-    const tasksCollection: AngularFirestoreCollection<ITask> = this.getTasksCollection();
+    const tasksCollection: AngularFirestoreCollection<ITask> = this.getTasksCollection(true);
     const tasksDBSub = tasksCollection
       .valueChanges()
       .subscribe((response: ITask[] | any) => {
@@ -151,17 +151,20 @@ export class AccountsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(tasksDBSub);
   }
 
-  private getTasksCollection(): AngularFirestoreCollection<ITask> {
-    const startDate = "2022-04-11";
-    let endDate;
+  private getTasksCollection(byDateRange: boolean): AngularFirestoreCollection<ITask> {
+    const locationDoc = this.afs.collection('accounts').doc(this.orgId).collection('locations').doc(this.locationId);
 
-    return this.afs
-      .collection('accounts')
-      .doc(this.orgId)
-      .collection('locations')
-      .doc(this.locationId)
-      .collection('tasks', tasks => tasks
-      .where('AvailableDate', '>=', startDate)
-      .where('AvailableDate', '<=', endDate || startDate)) // if no end date, get single day of tasks
+    if (byDateRange) {
+      const startDate = "2022-04-11";
+      let endDate;
+  
+      return locationDoc
+        .collection('tasks', tasks => tasks
+        .where('AvailableDate', '>=', startDate)
+        .where('AvailableDate', '<=', endDate || startDate)) // if no end date, get single day of tasks
+    }
+    else {
+      return locationDoc.collection('tasks');
+    }
   }
 }
