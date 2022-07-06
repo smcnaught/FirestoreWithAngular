@@ -12,22 +12,24 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CarsComponent } from './cars/cars.component';
 import { AccountsComponent } from './accounts/accounts.component';
+import { FormsComponent } from './forms/forms.component';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAHkhkd_RHNnCAUP8Eb-rSCimAk0dDSDrI",
-  authDomain: "xenonchex-firetest.firebaseapp.com",
-  projectId: "xenonchex-firetest",
-  storageBucket: "xenonchex-firetest.appspot.com",
-  messagingSenderId: "554021081657",
-  appId: "1:554021081657:web:65780e5a2129871876b3e8",
-  measurementId: "G-VSB69H70KG"
+  apiKey: "AIzaSyB9gaStgWvn_R_vC3AUdmgSgx68pZ35xYE",
+  authDomain: "hip-polymer-291803.firebaseapp.com",
+  projectId: "hip-polymer-291803",
+  storageBucket: "hip-polymer-291803.appspot.com",
+  messagingSenderId: "135609114254",
+  appId: "1:135609114254:web:d34da7ccef1a40018b73df",
+  measurementId: "G-X6TJLDDMYB"
 };
 
 @NgModule({
   declarations: [
     AppComponent,
     CarsComponent,
-    AccountsComponent
+    AccountsComponent,
+    FormsComponent
   ],
   imports: [
     BrowserModule,
