@@ -1,20 +1,20 @@
 <h1>Form Data</h1>
-<!-- <table>
+<table>
   <thead>
     <tr>
-      <td>Task Name</td>
-      <td>Status</td>
+      <td>Form ID</td>
+      <td>Form Template ID</td>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let task of tasksByLocation">
-      <td>{{ task.Name }}</td>
-      <td>{{ task.CurrentStatus }}</td>
-      <button (click)="deleteTask(task.ID)">Delete</button>
-      <button (click)="updateTask(task.ID, { Name: 'My New Task Updated' })">Update</button>
-      <button (click)="getTaskByID(task.ID)">Get</button>
+    <tr *ngFor="let form of formsByLocation; let i = index">
+      <td>{{ form.ID }}</td><br>
+      <td>{{ form.TemplateID }}</td>
+      <button (click)="deleteForm(form.ID)">Delete</button>
+      <button (click)="updateForm(form.ID, i, 'new name here!')">Update</button>
+      <button (click)="getFormByID(form.ID)">Get By Firebase ID</button>
+      <button (click)="getFormsByTemplateID(form.TemplateID)">Get By Form Template ID (a mysql id)</button>
     </tr>
   </tbody>
-</table> -->
+</table>
 <button (click)="createForm()">Add</button>
-<!-- <button (click)="testBatchWrites()">Batch Add Test</button> -->

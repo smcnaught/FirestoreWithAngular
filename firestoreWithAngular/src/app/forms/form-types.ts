@@ -1,50 +1,39 @@
 export interface IForm {
-  [section: `section${number}`]: ISection; // section1, section2, section3, etc.
+  ID: string; // firebase id
+  TemplateID: number; // mysql form template id
+  [section: `Section${number}`]: ISection; // Section0, Section1, Section2, etc.
 }
-
-// export interface ISectionNew {
-//   settings: ISectionSettings;
-//   [row: string]: ISectionData; // row1, row2, row3, etc.
-// }
-
-// type ISection = { settings: ISectionSettings; } & { [row: `row${number}`]: ISectionData; }
 
 export interface ISection {
-  // [settings: `settings`]: ISectionSettings;
-  settings: ISectionSettings;
-  [row: `row${number}`]: ISectionData;
+  Settings: ISectionSettings;
+  [Row: `Row${number}`]: ISectionData; // Row0, Row1, Row2, etc.
 }
 
-// type Props = {
-//   [key: `on${string}`]: (...a: any[]) => any; 
-//   [key: `flag${string}`]: boolean;
-// }
-
 export interface ISectionSettings {
-  id: number;
-  title: string;
+  ID: number;
+  Title: string;
 }
 
 export interface ISectionData {
-  [column: string]: IItem;
+  [Column: string]: IItem;
 }
 
 export interface IItem {
-  name: string;
-  type: DraggedElementType,
-  value: FormItems.TextInput | FormItems.NumberInput |  FormItems.IDateTimeInput | FormItems.ISelectInput[] | FormItems.MultimediaInput;
-  settings: IItemSettings;
+  Name: string;
+  Type: DraggedElementType,
+  Value: FormItems.TextInput | FormItems.NumberInput |  FormItems.IDateTimeInput | FormItems.ISelectInput[] | FormItems.MultimediaInput;
+  Settings: IItemSettings;
 }
 
 export enum DraggedElementType {
-  none,
-  text,
-  number,
-  dateTime,
-  multiSelect,
-  singleSelect,
-  multimedia,
-  section
+  None,
+  Text,
+  Number,
+  DateTime,
+  MultiSelect,
+  SingleSelect,
+  Multimedia,
+  Section
 }
 
 export namespace FormItems {
@@ -53,16 +42,16 @@ export namespace FormItems {
   export type MultimediaInput = File;
 
   export interface IDateTimeInput {
-    date: string;
-    time: string;
+    Date: string;
+    Time: string;
   }
 
   export interface ISelectInput {
-    value: string;
-    checked: boolean;
+    Value: string;
+    Checked: boolean;
   }
 }
 
 export interface IItemSettings {
-  required: boolean;
+  Required: boolean;
 }
